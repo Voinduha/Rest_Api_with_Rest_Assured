@@ -74,4 +74,20 @@ public class ReqresInTests {
                 .body("name", is("morpheus"))
                 .body("job", is("zion resident"));
     }
+    //https://reqres.in/api/unknown
+    //"page": 1
+    //"total_pages": 2
+    // "support": {"text": "To keep ReqRes free, contributions towards server costs are appreciated!"}
+    @Test
+    void successListResourceTest () {
+        given()
+                .when()
+                .get("/api/unknown")
+                .then()
+                .statusCode(200)
+                .body("page", is(1))
+                .body("total_pages", is(2))
+                .body("support.text", is ("To keep ReqRes free," +
+                        " contributions towards server costs are appreciated!"));
+    }
 }
