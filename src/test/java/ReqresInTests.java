@@ -29,6 +29,8 @@ public class ReqresInTests {
                         " contributions towards server costs are appreciated!"));
     }
     // https://reqres.in/api/login
+    // "email": "eve.holt@reqres.in",
+    // "password": "cityslicka"
     @Test
     void successLoginTest () {
         given()
@@ -40,5 +42,36 @@ public class ReqresInTests {
                 .then()
                 .statusCode(200)
                 .body("token", is("QpwL5tke4Pnpja7X4"));
+    }
+    //https://reqres.in/api/users/2
+    //"data": { "id": 2, "email": "janet.weaver@reqres.in", }
+    //"support": {"url": "https://reqres.in/#support-heading", }
+    @Test
+    void successSingleUserTest () {
+        given()
+                .when()
+                .get("/api/users/2")
+                .then()
+                .statusCode(200)
+                .body("data.id", is(2))
+                .body("data.email", is("janet.weaver@reqres.in"))
+                .body("support.url", is ("https://reqres.in/#support-heading"));
+    }
+    //https://reqres.in/api/users/2
+    //{ "name": "morpheus", "job": "zion resident" }
+    //"name": "morpheus"
+    //"job": "zion resident"
+    @Test
+    void successUpdateTest () {
+        given()
+                .contentType(ContentType.JSON)
+                .body("{ \"name\": \"morpheus\"," +
+                        " \"job\": \"zion resident\" }")
+                .when()
+                .put("/api/users/2")
+                .then()
+                .statusCode(200)
+                .body("name", is("morpheus"))
+                .body("job", is("zion resident"));
     }
 }
